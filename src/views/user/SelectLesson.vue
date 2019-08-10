@@ -1,13 +1,11 @@
 <template>
-  <div >
-    选择课程
-  </div>
+  <p>选择课程</p>
+
 </template>
 
 <script>
 
-export default {
-  name: 'SelectLesson',
+  export default {
 
-}
+  }
 </script>
