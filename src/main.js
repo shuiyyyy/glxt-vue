@@ -3,8 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 
-import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import ElementUI from 'element-ui';
 import router from './router/router.js';
 import axiosHttp from './axios/http.js';
 import store from './store/store.js';

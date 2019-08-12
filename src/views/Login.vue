@@ -41,8 +41,8 @@
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
+          const me = this; // 避免axois请求之后this undefined
           if (valid) {
-            let me = this; // 避免axois请求之后this undefined
             me.axiosHttp({
               url: '/login',
               method: 'post',
@@ -51,26 +51,22 @@
                 password: this.form.password,
               },
             }).then(res => {
-              if (res.code === 0) {
+              if (res.code === "0") {
                 if (document.cookie) {
                   let cookieStr = document.cookie;
                   let cookieArr = cookieStr.split("=");
                   sessionStorage.setItem(cookieArr[0], cookieArr[1]);
                 }
                 sessionStorage.setItem('userId', me.form.userId);
-                me.$router.push({
-                  name: 'main',
-                });
-              } else if (res.code === 500217) { // 重复登录
+                me.$router.push('/main/welcome');
+              } else if (res.code === "500217") { // 重复登录
                 if (document.cookie) {
                   let cookieStr = document.cookie;
                   let cookieArr = cookieStr.split("=");
                   sessionStorage.setItem(cookieArr[0], cookieArr[1]);
                 }
                 sessionStorage.setItem('userId', me.form.userId);
-                me.$router.replace({
-                  path: 'main',
-                })
+                me.$router.push('/main/welcome')
               } else {
                 me.$message({
                   message: res.msg,

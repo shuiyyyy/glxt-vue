@@ -16,9 +16,6 @@
         </transition>
   </div>
 </div>
-
-      </div>
-    </div>
 </template>
 
 <script>
@@ -31,7 +28,7 @@ export default {
    })
 }
 </script>
-<style>
+<style scoped>
   .transition-box {
     margin-bottom: 10px;
     width: 200px;

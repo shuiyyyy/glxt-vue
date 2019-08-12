@@ -15,15 +15,15 @@
           <el-submenu index="3">
             <template slot="title">我的课程</template>
             <el-menu-item index="3-2">
-              <router-link to="/user/selectedLesson">已选课程</router-link>
+              <router-link to="/lesson/selectedLesson">已选课程</router-link>
             </el-menu-item>
             <el-menu-item index="3-3">
-              <router-link to="/user/queryAllLesson">查询所有课程</router-link>
+              <router-link to="/lesson/queryAllLesson">查询所有课程</router-link>
             </el-menu-item>
           </el-submenu>
 
           <el-menu-item index="4">
-            <router-link to="/user/adminstrator">管理员课程管理</router-link>
+            <router-link to="/lesson/adminstrator">管理员课程管理</router-link>
           </el-menu-item>
 
           <el-menu-item index="5">
@@ -60,13 +60,32 @@
       handleSelect(key, keyPath) {
       },
       logout() {
+        const me = this;
         this.$confirm('是否退出登录?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$router.push({
-            path: '/login'
+          me.axiosHttp({
+            url: '/logout',
+            method: 'post',
+            params: {},
+          }).then(res => {
+            if (res.code === "0") {
+              this.$router.push({
+                path: '/login'
+              });
+            } else {
+              me.$message({
+                type: "error",
+                message: "登出失败，请稍后再试",
+              })
+            }
+          }).catch(res => {
+            me.$message({
+              type: "error",
+              message: "登出失败，请稍后再试",
+            })
           });
         }).catch(() => {
         });

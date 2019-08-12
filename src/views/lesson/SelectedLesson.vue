@@ -44,7 +44,7 @@
     },
     methods: {
       getSelectedLesson() {
-        let me = this;
+        const me = this;
         this.axiosHttp({
           url: "/home/myLesson",
           method: "get",
@@ -53,7 +53,7 @@
             pageSize: this.pageInfo.pageSize,
           }
         }).then(res => {
-          if(res.code === 0 && res.data.length > 0) {
+          if(res.code === "0" && res.data.length > 0) {
             const data1 = res.data;
             me.selectedLessonList = [];
             data1.forEach(function (one) {

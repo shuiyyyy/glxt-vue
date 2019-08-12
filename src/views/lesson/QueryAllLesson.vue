@@ -52,7 +52,7 @@
       detail(row) {
       },
       select(row) {
-        let me = this; // 避免axois请求之后this undefined
+        const me = this; // 避免axois请求之后this undefined
         this.axiosHttp({
           url: '/home/selectLesson',
           method: 'post',
@@ -60,7 +60,7 @@
             lessonId: row.lessonId,
           },
         }).then(res => {
-          if (res.code === 0) {
+          if (res.code === "0") {
             me.$message({
               message: "选课成功！",
               type: "success",
@@ -79,7 +79,7 @@
         });
       },
       getAllLesson() {
-        let me = this;
+        const me = this;
         this.axiosHttp({
           url: "/home/listLesson",
           method: "get",
@@ -88,7 +88,7 @@
             pageSize: this.pageInfo.pageSize,
           },
         }).then(res => {
-          if(res.code === 0 && res.data.length > 0) {
+          if(res.code === "0" && res.data.length > 0) {
             const data1 = res.data;
             me.allLessonList = [];
             data1.forEach(function (one) {

@@ -6,12 +6,13 @@ import router from '../router/router.js';
 // axios 配置
 axios.defaults.timeout = 60000;
 
-// axios.defaults.header("Access-Control-Allow-Origin", "*");
+// axios.defaults.headers.common['Access-Control-Allow-Origin'] = "*";
 // axios.defaults.header("Access-Control-Allow-Headers", "X-Requested-With,Content-Type");
 // axios.defaults.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-axios.defaults.headers.post['Content-Type'] = 'application/json';
 // axios.defaults.headers.common['Authorization'] = 'bearer ' + localStorage.getItem('currentUser_token');
-axios.defaults.baseURL = '/api';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.withCredentials = true; // 允许携带cookies信息
+axios.defaults.baseURL = process.env.API_ROOT; // 接口请求地址
 
 // http request 请求拦截器，有token值则配置上token值
 // axios.interceptors.request.use(
@@ -28,7 +29,7 @@ axios.defaults.baseURL = '/api';
 // http response 服务器响应拦截器，这里拦截401错误，并重新跳入登页重新获取token
 axios.interceptors.response.use(
   response => {
-    if (response.data.code === 500210) { // 还没有登录
+    if (response.data.code === "500210") { // 还没有登录
       sessionStorage.clear();
       router.replace({
         path: 'login',
@@ -50,7 +51,7 @@ axios.interceptors.response.use(
         case 403:
           // 403 无权限，跳转到首页
           router.replace({
-            path: '/login',
+            path: 'login',
             query: {redirect: router.currentRoute.fullPath},
           });
           break;

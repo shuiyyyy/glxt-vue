@@ -3,13 +3,14 @@ import VueRouter from 'vue-router'
 
 import Main from '../views/Main'
 import Login from '../views/Login'
-import Welcome from '../views/user/Welcome'
+import Welcome from '../views/base/Welcome'
 import UserProfile from '../views/user/UserProfile'
 import UserList from '../views/user/UserList'
-// import Adminstrator from '../views/user/Adminstrator'
-// import SelectLesson from '../views/user/SelectLesson'
-import SelectedLesson from '../views/user/SelectedLesson'
-import QueryAllLesson from '../views/user/QueryAllLesson'
+// import Adminstrator from '../views/lesson/Adminstrator'
+// import SelectLesson from '../views/lesson/SelectLesson'
+import SelectedLesson from '../views/lesson/SelectedLesson'
+import QueryAllLesson from '../views/lesson/QueryAllLesson'
+import NotFound from '../views/base/NotFound'
 
 
 Vue.use(VueRouter);
@@ -30,17 +31,17 @@ const routers = [
       {path: '/main/welcome', name: 'Welcome', component: Welcome},
       {path: '/user/profile', name: 'UserProfile', component: UserProfile},
       {path: '/user/list', name: 'UserList', component: UserList},
-      // {path: '/user/adminstrator', name: 'Adminstrator', component: Adminstrator},
-      // {path: '/user/selectLesson', name: 'SelectLesson', component: SelectLesson},
-      {path: '/user/selectedLesson', name: 'SelectedLesson', component: SelectedLesson},
-      {path: '/user/queryAllLesson', name: 'QueryAllLesson', component: QueryAllLesson},
+      // {path: '/lesson/adminstrator', name: 'Adminstrator', component: Adminstrator},
+      // {path: '/lesson/selectLesson', name: 'SelectLesson', component: SelectLesson},
+      {path: '/lesson/selectedLesson', name: 'SelectedLesson', component: SelectedLesson},
+      {path: '/lesson/queryAllLesson', name: 'QueryAllLesson', component: QueryAllLesson},
     ]
   },
-  // {
-  //   path: '*',
-  //   name: 'notFound',
-  //   component: NotFound,
-  // }
+  {
+    path: '*',
+    name: 'notFound',
+    component: NotFound,
+  }
 ];
 /**
  * 在创建的 router 对象中，如果不配置 mode，就会使用默认的 hash 模式，该模式下会将路径格式化为 #! 开头。
@@ -50,7 +51,7 @@ const routers = [
  */
 const RouterConfig = {
   mode: 'history',
-  routes: routers
+  routes: routers,
 };
 const router = new VueRouter(RouterConfig);
 router.beforeEach((to, form, next) => {
@@ -58,8 +59,8 @@ router.beforeEach((to, form, next) => {
     sessionStorage.clear();
     next();
   } else {
-    let token = sessionStorage.getItem('token');
-    if (token) {
+    let userId = sessionStorage.getItem('userId');
+    if (userId) {
       next();
     } else {
       next({path: '/login'});
