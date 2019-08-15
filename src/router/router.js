@@ -20,27 +20,56 @@ const routers = [
     // 登录页
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {
+      requireAuth: false,
+    },
   },
   {
     // 首页
     path: '/main',
     name: 'Main',
     component: Main,
+    meta: {
+      requireAuth: true,
+    },
     children: [
-      {path: '/main/welcome', name: 'Welcome', component: Welcome},
-      {path: '/user/profile', name: 'UserProfile', component: UserProfile},
-      {path: '/user/list', name: 'UserList', component: UserList},
+      {path: '/main/welcome', name: 'Welcome', component: Welcome,
+        meta: {
+          requireAuth: true,
+        },
+      },
+      {path: '/user/profile', name: 'UserProfile', component: UserProfile,
+        meta: {
+          requireAuth: true,
+        },
+      },
+      {path: '/user/list', name: 'UserList', component: UserList,
+        meta: {
+          requireAuth: true,
+        },
+      },
       // {path: '/lesson/adminstrator', name: 'Adminstrator', component: Adminstrator},
       // {path: '/lesson/selectLesson', name: 'SelectLesson', component: SelectLesson},
-      {path: '/lesson/selectedLesson', name: 'SelectedLesson', component: SelectedLesson},
-      {path: '/lesson/queryAllLesson', name: 'QueryAllLesson', component: QueryAllLesson},
-    ]
+      {path: '/lesson/selectedLesson', name: 'SelectedLesson', component: SelectedLesson,
+        meta: {
+          requireAuth: true,
+        },
+      },
+      {path: '/lesson/queryAllLesson', name: 'QueryAllLesson', component: QueryAllLesson,
+        meta: {
+          requireAuth: true,
+        },
+      },
+    ],
   },
   {
     path: '*',
     name: 'notFound',
     component: NotFound,
+    meta: {
+      requireAuth: false,
+    },
   }
 ];
 /**
@@ -55,15 +84,27 @@ const RouterConfig = {
 };
 const router = new VueRouter(RouterConfig);
 router.beforeEach((to, form, next) => {
-  if (to.path === '/login') {
-    sessionStorage.clear();
-    next();
+  let cookiesStr = document.cookie;
+  let cookiesArr = cookiesStr.split(';')
+  cookiesArr.forEach(function (cookie) {
+    let keyAndValueArr = cookie.split('=');
+    sessionStorage.setItem(keyAndValueArr[0], keyAndValueArr[1]);
+  });
+
+  if (sessionStorage.getItem('token')) {
+    if (!to.meta.requireAuth) { // 已经登录访问不需要登录的页面就重定向到主页
+      next({path: '/main/welcome'})
+    } else {
+      next();
+    }
   } else {
-    let userId = sessionStorage.getItem('userId');
-    if (userId) {
+    if (!to.meta.requireAuth) { // 没有登录访问不需要登录的页面就继续
       next();
     } else {
-      next({path: '/login'});
+      next({
+        path: '/login',
+        query: {redirect: to.fullPath,}
+      })
     }
   }
 });

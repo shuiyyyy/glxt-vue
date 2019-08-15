@@ -36,7 +36,7 @@ const commonUtil = {
       num = '0'+num;
     }
   return num;
-}
+  },
 }
 
 export default commonUtil;

@@ -49,11 +49,10 @@ axios.interceptors.response.use(
           });
           break;
         case 403:
-          // 403 无权限，跳转到首页
-          router.replace({
-            path: 'login',
-            query: {redirect: router.currentRoute.fullPath},
-          });
+          // router.replace({
+          //   path: 'login',
+          //   query: {redirect: router.currentRoute.fullPath},
+          // });
           break;
         case 500:
           this.$message.error('系统异常');
