@@ -68,7 +68,7 @@ const routers = [
     name: 'notFound',
     component: NotFound,
     meta: {
-      requireAuth: false,
+      requireAuth: true,
     },
   }
 ];
